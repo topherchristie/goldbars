@@ -1,10 +1,10 @@
 {
-  "name": "chat-example",
-  "version": "0.0.0",
-  "description": "A chat example to showcase how to use `socket.io` with a static `express` server",
+  "name": "bars-of-gold",
+  "version": "0.0.1",
+  "description": "Money manager single page app",
   "main": "server.js",
   "repository": "",
-  "author": "Mostafa Eweda <mostafa@c9.io>",
+  "author": "Chris Christie @topherchristie",
   "dependencies": {
     "async": "~0.2.8",
     "express": "~3.2.4",

@@ -1,1 +1,6 @@
 node_modules
+.c9revisions
+.c9revisions/*
+*.swp
+*/*.c9save
+test.config
