@@ -6,8 +6,17 @@
   "repository": "",
   "author": "Chris Christie @topherchristie",
   "dependencies": {
-    "async": "~0.2.8",
-    "express": "~3.2.4",
-    "socket.io": "~0.9.14"
-  }
+    "async": "*",
+    "express": "*",
+    "socket.io": "*",
+    "swig":"*"
+  },
+    "devDependencies":{
+        "vows":"*",
+        "should":"*",
+        "uglify-js":"*"
+  },
+    "engines": {
+    "node": "0.10.x"
+    }
 }
