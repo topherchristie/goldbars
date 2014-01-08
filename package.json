@@ -1,22 +1,26 @@
 {
-  "name": "bars-of-gold",
-  "version": "0.0.1",
-  "description": "Money manager single page app",
-  "main": "server.js",
-  "repository": "",
-  "author": "Chris Christie @topherchristie",
+  "name": "Money",
+  "version": "0.0.0",
   "dependencies": {
-    "async": "*",
-    "express": "*",
-    "socket.io": "*",
-    "swig":"*"
+    "xdate":"*",
+    "mongoose":"*"
   },
-    "devDependencies":{
-        "vows":"*",
-        "should":"*",
-        "uglify-js":"*"
+  "devDependencies": {
+    "generator-flight": "~0.6.0",
+    "karma": "~0.10.0",
+    "karma-jasmine": "~0.1.0",
+    "karma-requirejs": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-ie-launcher": "~0.1.1",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-safari-launcher": "~0.1.1"
   },
-    "engines": {
-    "node": "0.10.x"
-    }
+  "scripts": {
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
+  }
+  "engines": {
+    "node": "0.10.x",
+    "npm":  "1.x.x"
+  }
 }

@@ -4,3 +4,4 @@ node_modules
 *.swp
 */*.c9save
 test.config
+app/bower_components
