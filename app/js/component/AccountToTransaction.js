@@ -7,7 +7,9 @@ define(function (require) {
    */
 
   var defineComponent = require('flight/lib/component');
-    var templates = require('js/templates')
+    var templates = require('js/templates.auto');
+    var socketIo = require('socketIo/socket.io');
+    var Moment = require('moment');
   /**
    * Module exports
    */
@@ -24,32 +26,31 @@ define(function (require) {
 
     });
      this.renderItems = function(items) {
-        return templates.transactionList.render({transactions: items});
+       var viewItems = this.CreateViewItems(items);
+        return templates.transactionList.render({transactions: viewItems});
       };
-      
-
-      this.assembleItems = function() {
-        var items = [];
-        items.push({'name':'Simple',"_id":"asdfasd_asdfasdfa_simple"});
-        items.push({'name':'Chase',"_id":"fffff_ddddd_chase"});
-        return items;
-      };
-    
+       
+      this.CreateViewItems = function(items) {
+        var resultItems = [];
+        console.log("moment",Moment);
+        items.forEach(function(each){
+            
+            resultItems.push({
+                id:each._id.toString(),
+                date:Moment(each.date).format("YYYY MM DD"),
+                type:each._type,
+                value:each.value.toFixed(2),
+                note:each.note
+            });
+        }) ;
+        return resultItems;
+      }
     
     this.getAccountTransactions = function(ev,data){
-        console.log('getAccountTransactions',data);
-         var items = [];
-        items.push({'date':'2014-01-01',"value":101, "_id":"asdfasd_asdfasdfa_3"});
-        items.push({'date':'2013-12-25',"value":34,"_id":"fffff_ddddd_4"});
-        this.trigger("dataTransactionsServed", {markup: this.renderItems(items)})
-        
+         this.socket.emit('requestTransactions',{"id":data.account});
     }
     this.getLatestTransactions = function(ev,data){
-        console.log('getLatestTransactions',data);
-        var items = [];
-        items.push({'date':'2014-01-01',"value":1000, "_id":"asdfasd_asdfasdfa_1"});
-        items.push({'date':'2014-01-03',"value":77,"_id":"fffff_ddddd_2"});
-        this.trigger("dataTransactionsServed", {markup: this.renderItems(items)})
+         this.socket.emit('requestTransactions',{});
     }
     this.after('initialize', function () {
         console.log('transactionData init');
@@ -57,6 +58,12 @@ define(function (require) {
         
         this.on("uiAccountTransactionsRequested", this.getAccountTransactions);
       //  this.on('click', this.getAccountTrasactions);
+        var component = this;
+        this.socket = io.connect();
+        this.socket.on('transactions',function(transactions){
+    //           console.log('socketio.transactions',transactions);
+           component.trigger("dataTransactionsServed", {markup: component.renderItems(transactions)});
+        });
     });
   }
 

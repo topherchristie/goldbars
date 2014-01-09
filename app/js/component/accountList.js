@@ -23,10 +23,7 @@ define(function (require) {
 
     });
     this.renderItems = function(ev, data) {
-        console.log('render account list component', data.markup);
-        console.log('html was',this.$node.html());
         this.$node.html(data.markup);
-        //new items, so no selections
         //this.trigger('uiMailItemSelectionChanged', {selectedIds: []});
     };
     

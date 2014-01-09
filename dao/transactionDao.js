@@ -72,7 +72,7 @@ function init(transactionDao, args) {
     if(len > 0){
       transactionDao._db = args[0];
     }else{
-      transactionDao._db = require('./dashboardDatabase').db();    
+      transactionDao._db = require('../dao').db();    
     }
     var Transaction = transactionDao.Transaction = transactionDao._db.model('Transaction',TransactionSchema);
     transactionDao.close = function(){
@@ -130,8 +130,11 @@ function init(transactionDao, args) {
     transactionDao.findUnconfirmed = function(callback){
         Transaction.find({"confirmed":false}).populate("account").sort("date").exec(callback);
     }
-    transactionDao.findLast100 = function(account,callback){
-        Transaction.find({"account":account}).sort("-date").exec(callback);
+    transactionDao.findLast100 = function(callback){
+        Transaction.find({}).limit(100).sort("-date").exec(callback);
+    }
+    transactionDao.findLast100ByAccount = function(account,callback){
+        Transaction.find({"account":account}).limit(100).sort("-date").exec(callback);
     }
     transactionDao.findAll = function(callback){
         Transaction.find().exec(callback);

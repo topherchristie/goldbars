@@ -2,8 +2,9 @@
   "name": "Money",
   "version": "0.0.0",
   "dependencies": {
-    "flight": "~1.1.0",
-    "requirejs": "~2.1.5"
+    "flight": "~1.1.1",
+    "requirejs": "~2.1.5",
+    "bootstrap": "*"
   },
   "devDependencies": {
     "jasmine-flight": "*",

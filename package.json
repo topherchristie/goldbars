@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
-  }
+  },
   "engines": {
     "node": "0.10.x",
     "npm":  "1.x.x"

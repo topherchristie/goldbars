@@ -8,6 +8,7 @@ requirejs.config({
     'component': 'js/component',
     'page': 'js/page'
     ,'socketIo': '/socket.io'
+    ,'moment':'/moment/moment.min'
   }
 });
 

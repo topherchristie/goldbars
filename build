@@ -1,0 +1,10 @@
+
+echo "'use strict';" > app/js/templates.auto.js
+echo "define(function (require) {" >> app/js/templates.auto.js
+echo "var Hogan = require('hogan/hogan-2.0.0.amd');" >> app/js/templates.auto.js
+
+hulk app/templates/* >> app/js/templates.auto.js
+
+echo "return templates;" >> app/js/templates.auto.js
+echo "});" >> app/js/templates.auto.js
+ 

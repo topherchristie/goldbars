@@ -8,7 +8,7 @@ define(function (require) {
 
   var defineComponent = require('flight/lib/component');
   var withSelect = require('./with_select');
-  var templates = require('js/templates');
+  var templates = require('js/templates.auto');
   var socketIo = require('socketIo/socket.io');
   /**
    * Module exports
@@ -37,11 +37,28 @@ define(function (require) {
     
     
      this.renderItems = function(items) {
-        return templates.accountList.render({accounts: items});
+        return templates.accountList.render({accounts: this.CreateViewItems(items)});
       };
-      
+    this.CreateViewItems = function(items) {
+        var resultItems = [];
+
+        items.forEach(function(each){
+            console.log("type:",each._type);
+            resultItems.push({
+                id:each._id.toString(),
+                link:each.link,
+                name:each.name,
+                type:each._type,
+                balance:each.balance.toFixed(2),
+                confirmed:each.confirmed.toFixed(2),
+                //remaining:each.remaining.toFixed(2)
+                remaining: (each._type == "credit"? (each.max - each.balance)*-1 :  each.balance).toFixed(2)
+            });
+        }) ;
+        return resultItems;
+      }
     this.fetchAccountTransactions = function(ev, data) {
-          this.trigger('uiAccountTransactionsRequested', {folder: data.selectedIds[0]});
+          this.trigger('uiAccountTransactionsRequested', {account: data.selectedIds[0]});
       }
       this.assembleItems = function() {
      //     $.ajax('/api/accounts',)

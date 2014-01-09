@@ -1,20 +1,33 @@
 
-var dashboardDatabase = exports.dashboardDatabase = require("./dashboardDatabase");
-
-exports.connect = function() {
-    console.log('db connect called');
-    dashboardDatabase.connect();
-}
-
-exports.disconnect = function(callback){
-    dashboardDatabase.disconnect(cb);
-}
-
 
 //exports.accountDao  = require("./accountDao");
 exports.db = function(){
    return dashboardDatabase.db();
 }
-//exports.bookDao = require("./bookDao");
-//exports.bookDao = require("./bookDao");
-//exports.transactionDao = require("./transactionDao");
+
+var mongoose = require('mongoose');
+var config = require("../config");
+var dbUrl = config.DashboardConnectionString; 
+var _db;
+exports.db = function(){
+    if(!_db){
+   //   throw 
+    console.log("Dashboard Database not setup");
+    }
+  return _db;
+};
+exports.connect = function() {
+    if(!_db){
+        _db = mongoose.createConnection(dbUrl);
+        _db.once('open', function () { });
+    }
+};
+exports.disconnect = function(callback){
+ //   console.log('closing connection to dashboard db');
+    if(_db)
+      _db.close(function(){
+        _db = null;
+        if(callback)
+            callback();
+        });
+};
