@@ -7,40 +7,64 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css">
+    <!--<link rel="stylesheet" href="/app/css/bolt-theme/css/bootstrap.css">-->
+    <link rel="stylesheet" href="/app/css/bolt-theme/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/app/css/bolt-theme/css/main.css">
+    
+    <!--<link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css">-->
+    
     <style>
       body {
-        padding-top: 60px;
+        /*padding-top: 60px;*/
       }
     </style>
     <link rel="stylesheet" href="/app/css/main.css">
   </head>
   <body>
-    <div class="container">
+    <div class="container" style="width:100%">
         <div class="row">
-            <div class="col-lg-5">
-                <div class="row" id="accounts">
-                    accounts
-                </div>
+            <div class="col-md-7">
+                <div class="row panel panel-theme">
+                    <div class="panel-heading">Accounts</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td>&nbsp;</td> 
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Balance</td>
+                                    <td>Confirmed</td>
+                                    <td>Remaining</td>
+                                </tr>
+                            </thead>
+                            <tbody id="accounts">
+                            </tbody>
+                        </table>
+                    </div> <!-- / panel-body -->
+                </div><!-- / panel -->
             </div>
-            <div class="panel panel-primary col-lg-7" data-spy="scroll" style="height: 400px;overflow:auto;">
-            
-            
-             <table class="table table-striped">
-    <thead>
-        <tr>
-            <td>&nbsp;</td> 
-            <td>Date</td>
-            <td>Type</td>
-    <td>Amount</td>
-            <td>Status</td>
-            <td>Note</td>
-        </tr>
-    </thead>
-    <tbody id="transactions">
-        </tbody>
-</table>
-            </div>
+            <div class="col-md-5">
+                <div class="panel panel-theme" >
+                    <div class="panel-heading" id="transactionHeader">Transactions</div>
+                    <div class="panel-body" data-spy="scroll" style="height: 400px;overflow:auto;">
+                        <table class="table table-striped table-condensed"  >
+                            <thead>
+                                <tr>
+                                    <td>&nbsp;</td> 
+                                    <td>Date</td>
+                                    <td>Type</td>
+                            <td>Amount</td>
+                                    <td>Status</td>
+                                    <td>Note</td>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions">
+                                </tbody>
+                        </table>
+                    </div> <!-- / panel-body -->
+                </div><!-- / panel -->
+            </div><!-- /col -->
         </div>
         
     </div>

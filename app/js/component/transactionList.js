@@ -22,7 +22,9 @@ define(function (require) {
     this.defaultAttrs({
 
     });
-
+    this.clearTransactions = function(ev,data){
+        this.$node.style('background-color','#cccccc');
+    }
     this.renderItems = function(ev, data) {
       //  console.log('render trans list component', data.markup);
    //     console.log('html was',this.$node.html());
@@ -35,6 +37,7 @@ define(function (require) {
     this.after('initialize', function () {
         console.log('transactionList init');
         this.on(document, 'dataTransactionsServed', this.renderItems);
+        this.on('waitingForTransactions',this.clearTransactions)
         this.trigger('uiLatestTransactionsRequested');
     });
   }

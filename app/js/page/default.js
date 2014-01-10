@@ -9,7 +9,7 @@ define(function (require) {
    var Accounts = require('component/accountList');
    var AccountData = require('component/accountData');
    var Transactions = require('component/transactionList');
-   var TransactionData = require('component/AccountToTransaction');
+   var TransactionData = require('component/transactionData');
    var DataApi = require('component/DataApi');
 
   
@@ -30,7 +30,7 @@ define(function (require) {
     TransactionData.attachTo(document);
     Accounts.attachTo("#accounts");
     Transactions.attachTo("#transactions");
-    DataApi.attachTo(document)
+    DataApi.attachTo(document);
     
     console.log('default page initialized',Accounts);
   }

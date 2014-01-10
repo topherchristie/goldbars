@@ -43,7 +43,6 @@ define(function (require) {
         var resultItems = [];
 
         items.forEach(function(each){
-            console.log("type:",each._type);
             resultItems.push({
                 id:each._id.toString(),
                 link:each.link,
