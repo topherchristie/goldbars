@@ -1,10 +1,9 @@
 {{#accounts}}
 <tr>
     <td><a class="btn btn-xs btn-theme"  href="#/account/{{id}}"><i class="glyphicon glyphicon-edit"></i></a></td>
-    <td><a class="account" href="#/account">{{name}}</a><a href="{{link}}" target="_blank"><i class="glyphicon glyphicon-export"></i></a></td>
-    <td>{{type}}</td>
-    <td class="isNumber"d>{{balance}}</td>
-    <td class="isNumber"d>{{confirmed}}</td>
-    <td class="isNumber"d>{{remaining}}</td>
+    <td><a class="account" href="#/account" id="{{id}}">{{name}}</a><span class="account-type {{type}}" title="{{type}}"></span><a href="{{link}}" target="_blank" class="non-button"><i class="glyphicon glyphicon-export"></i></a></td>
+    <td class="isNumber">{{balance}}</td>
+    <td class="isNumber hidden-xs hidden-sm">{{confirmed}}</td>
+    <td class="isNumber">{{remaining}}</td>
 </tr>
 {{/accounts}}

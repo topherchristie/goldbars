@@ -19,7 +19,8 @@ var express = require('express');
 var router = express();
 var server = http.createServer(router);
 var io = socketio.listen(server);
-
+io.set('browser client minification', true);  // send minified client
+io.set('browser client etag', true);          // apply etag caching logic based on version number
 router.use('/bootstrap',express.static(path.resolve(__dirname, 'bower_components/bootstrap/dist')));
 router.use('/jquery',express.static(path.resolve(__dirname, 'bower_components/jquery')));
 router.use('/moment',express.static(path.resolve(__dirname, 'node_modules/moment/min')));

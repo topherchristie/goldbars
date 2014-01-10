@@ -23,12 +23,19 @@ define(function (require) {
 
     });
     this.clearTransactions = function(ev,data){
-        this.$node.style('background-color','#cccccc');
+        this.$node.css('background-color','red').css('color','red');
     }
     this.renderItems = function(ev, data) {
       //  console.log('render trans list component', data.markup);
    //     console.log('html was',this.$node.html());
         this.$node.html(data.markup);
+        
+        $(document).ready(function(){
+            var pH = //$("#trantable").parent().parent().parent().height();
+            $('#accounts').parent().parent().height();
+            console.log("ph",pH);
+             $("#trantable").css('max-height',(pH+0));
+        }); 
         //new items, so no selections
         //this.trigger('uiMailItemSelectionChanged', {selectedIds: []});
     };

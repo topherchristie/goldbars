@@ -57,6 +57,7 @@ define(function (require) {
         return resultItems;
       }
     this.fetchAccountTransactions = function(ev, data) {
+        console.log('fetching account Trasactions',data);
           this.trigger('uiAccountTransactionsRequested', {account: data.selectedIds[0]});
       }
       this.assembleItems = function() {

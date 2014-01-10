@@ -112,17 +112,7 @@ a:after {
 	border-color: transparent;
 }
 
-.panel-theme {
-  border-color: #d6e9c6;
-}
-.panel-theme > .panel-body {
-    padding:0px;
-}
-.panel-theme > .panel-heading {
-  color:  #ffffff;
-  background-color: #74cfae;
-  border-color: #d6e9c6;
-}
+
 /*.btn {*/
 /*	padding: 10px 30px;*/
 /*	margin-bottom: 0;*/
