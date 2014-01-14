@@ -58,6 +58,24 @@ io.on('connection', function (socket) {
             }
         })
     });
+    socket.on('addTransaction',function(data){
+        var AccountDao = require('./dao/accountDao');
+        accountDao = new AccountDao();
+        accountDao.findById(data.account._id,function(err,data){
+            
+            var account = data;
+            //account._id = data.account._id ;//'50c0b9b5ef16eae675000002';
+            //account.link = "http://www.simple.com";
+            account.name += "2";
+        //    account._type = "checking";
+            account.balance = 5555;
+            account.confirmed = 5575;
+      //  account.max  = 0;
+        
+        broadcast('accountUpdated', account);  
+        
+        });
+    });
     socket.on('requestTransactions', function (data) {
       
         var TransactionDao = require('./dao/transactionDao');

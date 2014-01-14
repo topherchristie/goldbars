@@ -36,9 +36,30 @@ define(function (require) {
     };
     
     
-     this.renderItems = function(items) {
-        return templates.accountList.render({accounts: this.CreateViewItems(items)});
-      };
+    this.renderItems = function(items) {
+        var context = {accounts: this.CreateViewItems(items)}
+        //context.partials = {"part":"<td>name</td>"};
+        return templates.accountList.render(
+            context,{"part": templates.accountOne});
+    };
+    this.renderItem = function(items) {
+        var context = this.CreateViewItem(items);
+        
+        
+        return templates.accountOne.render(context );
+    };
+     this.CreateViewItem = function(each) {
+      return {
+                id:each._id.toString(),
+                link:each.link,
+                name:each.name,
+                type:each._type,
+                balance:each.balance.toFixed(2),
+                confirmed:each.confirmed.toFixed(2),
+                //remaining:each.remaining.toFixed(2)
+                remaining: (each._type == "credit"? (each.max - each.balance)*-1 :  each.balance).toFixed(2)
+            };
+      }
     this.CreateViewItems = function(items) {
         var resultItems = [];
 
@@ -73,10 +94,19 @@ define(function (require) {
         this.on('uiAccountSelectionChanged', this.fetchAccountTransactions);
 
         var component = this;
-        this.socket = io.connect();
+        var s = this.socket = io.connect();
         this.socket.on('accounts',function(accounts){
            component.trigger("dataAccountsServed", {markup: component.renderItems(accounts)});
         });
+        this.socket.on('accountUpdated',function(account){
+            console.log("dataAccountUpdated", {id:account._id,markup: component.renderItem(account)});
+           component.trigger("dataAccountUpdated", {id:account._id,markup: component.renderItem(account)});
+        });
+        var callAddTransaction= function(){
+             s.emit('addTransaction',{account:{_id:"50f88c2550de020200000002"}});
+             console.log('addTransaction emitted');
+        };
+        setTimeout(callAddTransaction,10000)
     });     
   }
 

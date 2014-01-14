@@ -16,7 +16,10 @@
 a{
     color:black;
 }
-
+.panel-tight{
+    margin-right:-10px;
+    margin-left:-10px;
+}
 .panel-theme {
   border-color: #d6e9c6;
 }
