@@ -20,10 +20,8 @@ var router = express();
 var server = http.createServer(router);
 var io = socketio.listen(server);
 
-router.use('/bootstrap',express.static(path.resolve(__dirname, 'bower_components/bootstrap/dist')));
-router.use('/jquery',express.static(path.resolve(__dirname, 'bower_components/jquery')));
-router.use('/moment',express.static(path.resolve(__dirname, 'node_modules/moment/min')));
-router.use('/bower_components',express.static(path.resolve(__dirname, 'app/bower_components')));
+router.use('/app/lib',express.static(path.resolve(__dirname, 'app/bower_components')));
+router.use('/lib',express.static(path.resolve(__dirname, 'node_modules')));
 router.use('/app',express.static(path.resolve(__dirname, 'app')));
 //router.use(express.static(path.resolve(__dirname, 'app')));
 var messages = [];
