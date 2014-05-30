@@ -48,6 +48,7 @@ TransactionSchema.post('save',function(){
     }
    // next();
 });
+
 TransactionSchema.virtual('type').get(function(){
     return transactionManager.findType(this._type);
 });
@@ -142,7 +143,7 @@ function init(transactionDao, args) {
      transactionDao.findAccountAll = function(account,callback){
         Transaction.find({"account":account}).sort("-date").exec(callback);
     }
-    transactionDao.SumForAccount = function(account,callback){
+    var SumForAccount = transactionDao.SumForAccount = function(account,callback){
         Transaction.find({"account":account},function(err,trans){
             var sum = 0;
             var confirmed = 0;
@@ -153,7 +154,21 @@ function init(transactionDao, args) {
             });
             callback(null,{"balance":sum,"confirmed":confirmed});
         });
-    }
+    };
+    transactionDao.updateAccount = function(accountId,callback){
+        SumForAccount(accountId,function(err,result){
+            if(err) throw err; 
+            console.log(accountId,result);
+            var accountDao = new ad();
+            accountDao.updateBalance(accountId,result.balance,result.confirmed,function(err,doc){
+                callback(err,result);
+            });
+        });
+    };
+
+    transactionDao.setConfirmed = function(transactionId,newValue,callback){
+        Transaction.update({_id:transactionId }, { confirmed: newValue }, callback);
+    };
     transactionDao.removeAllForAccount = function(accountId,callback){
         Transaction.remove({"account":accountId},
             function(err){

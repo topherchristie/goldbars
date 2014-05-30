@@ -10,6 +10,8 @@ var async = require('async');
 var socketio = require('socket.io');
 var express = require('express');
 
+var TransactionDao = require('./dao/transactionDao');
+var AccountDao = require('./dao/accountDao');
 //
 // ## SimpleServer `SimpleServer(obj)`
 //
@@ -45,8 +47,8 @@ io.on('connection', function (socket) {
     });
       
     socket.on('requestAccounts', function () {
-          var AccountDao = require('./dao/accountDao');
-        accountDao = new AccountDao();
+        
+        var accountDao = new AccountDao();
         
         accountDao.all(function(err,data){
             if(err){
@@ -56,9 +58,21 @@ io.on('connection', function (socket) {
             }
         })
     });
+    socket.on('toggleConfirmTransaction',function(request){
+        var transDao = new TransactionDao(); 
+        transDao.setConfirmed(request.id,request.newValue?request.newValue:false,function(err){
+            transDao.updateAccount(request.accountId,function(err,data){
+                if(err){
+                    broadcast('error',err);
+                }else{
+                    data._id = request.accountId;
+                    broadcast('accountUpdated', data);  
+                }
+            });
+        });
+    });
     socket.on('addTransaction',function(data){
-        var AccountDao = require('./dao/accountDao');
-        accountDao = new AccountDao();
+        var accountDao = new AccountDao();
         accountDao.findById(data.account._id,function(err,data){
             
             var account = data;
@@ -76,17 +90,18 @@ io.on('connection', function (socket) {
     });
     socket.on('requestTransactions', function (data) {
       
-        var TransactionDao = require('./dao/transactionDao');
-         transDao = new TransactionDao();
-
         
+        var transDao = new TransactionDao();
+
+        var id = data.id;
+        var name = data.name;
        
          if(data && data.id){
             transDao.findLast100ByAccount(data.id,function(err,data){
                 if(err){
                     broadcast('error',err);
                 }else{
-                    broadcast('transactions', data);    
+                    broadcast('transactions', {'transactions':data,'title':'Last 100 transactions for ' + name});    
                 }
             });
         }else{
@@ -96,7 +111,7 @@ io.on('connection', function (socket) {
                 if(err){
                     broadcast('error',err);
                 }else{
-                    broadcast('transactions', data);    
+                    broadcast('transactions', {'transactions':data,'title':'Last 100 transactions for all accounts'});    
                 }
             });
         }
@@ -105,7 +120,6 @@ io.on('connection', function (socket) {
 });
 
 dao.connect(function(error){
-    console.log('connect returned(',error,')');
     if(error) throw error;
 });
 

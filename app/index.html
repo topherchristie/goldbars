@@ -1,75 +1,65 @@
+
 <!DOCTYPE html>
-<html ng-app="barsOfGold">
+<html lang="en" xmlns:ng="http://angularjs.org"  ng-app="barsOfGold">
   <head>
-    <meta charset="utf-8">
+      <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Money</title>
+    <title>Moneyfall</title>
     <meta name="description" content="">
+    <meta name="author" content="Chris Christie">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="//use.edgefonts.net/lekton;m-1m.js"></script>
     <link rel="stylesheet" href="/app/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/app/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/app/css/bolt-theme/css/main.css">
-    
+    <link rel="stylesheet" href="/app/css/layout.css">
+    <link rel="stylesheet" href="/app/css/main.css">
+    <link rel="stylesheet" href="/app/css/main1.css">
+    <link rel="shortcut icon" href="images/favicon.png">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
     <style>
       body {
-        /*padding-top: 60px;*/
+        padding-top: 0;
       }
     </style>
-    <link rel="stylesheet" href="/app/css/main.css">
   </head>
+
   <body ng-controller="MainController">
-    <div class="container" style="width:100%">
-        <div class="row">
-            <a href="#/transaction/add" id="addTransaction" class="btn btn-sm btn-primary">Add Transaction</a>
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+      <!-- Fixed navbar -->
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Skyfall</a>
+          </div>
         </div>
+      </div><!--/.navbar -->
+
+      <!-- Begin page content -->
+      <div class="container" style="width:100%">
         <div class="row">
             <div class="col-md-7">
-                <div class="row panel panel-theme panel-tight" ng-controller='AccountController'>
-                    <div class="panel-heading">Accounts <span class="badge">{{accounts.length}}</span></div>
-                    <div class="panel-body" data-spy="scroll" style="height: 600px;overflow:auto;" >
-                        <table class="table table-striped table-condensed" >
-                            <thead>
-                                <tr>
-                                    <td>&nbsp;</td> 
-                                    <td>Name</td>
-                                    <!--<td class="hidden-xs hidden-sm">Type</td>-->
-                                    <td class="isNumber">Balance</td>
-                                    <td class="isNumber hidden-xs hidden-sm">Confirmed</td>
-                                    <td class="isNumber">Remaining</td>
-                                </tr>
-                            </thead>
-                            <tbody ng-repeat="a in accounts" id="accounts">
-                                <tr>
-                                    <td><a class="btn btn-xs btn-theme account" ng-click="viewAccount(a._id)">
-                                    <!--<i class="glyphicon glyphicon-edit"></i>-->
-                                          <i class="fa" ng-class="{
-                                            'fa-credit-card':(a._type=='credit'),
-                                            'fa-money':(a._type=='checking'),
-                                            'fa-home':(a._type=='mortgage'),
-                                            'fa-briefcase':(a._type=='investment'),
-                                            'fa-umbrella':(a._type=='retirement'),
-                                            'fa-floppy-o': (a._type=='savings')}" title="{{a._type}}"></i>
-                                        
-                                    </a></td>
-                                    <td><a  href="#/account" class="account" id="{{a.id}}">{{a.name}}</a>
-                                        <!--<span class="account-type {{a._type}}" title="{{a._type}}"></span>-->
-                                      
-                                        <a href="{{a.link}}" target="_blank" class="non-button"><i class="fa fa-external-link"></i></a>
-                                    </td>
-                                    <td class="isNumber">{{a.balance | number:2}}</td>
-                                    <td class="isNumber hidden-xs hidden-sm">{{a.confirmed | number:2}}</td>
-                                    <td class="isNumber">{{remaining(a) | number:2}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div> <!-- / panel-body -->
-                </div><!-- / panel -->
+                <ng-view />
+                
+               
             </div>
-            <div class="col-md-5" style="padding-right:0" >
-                <div class="panel panel-theme  panel-tight" ng-controller='TransactionController' >
-                    <div class="panel-heading" id="transactionHeader">Transactions <span class="badge">{{transactions.length}}</span></div>
-                    <div class="panel-body" id="trantable"  data-spy="scroll" style="height: 600px;overflow:auto;">
+            <div class="col-md-5">
+                <div class="panel panel-theme  panel-tight" ng-controller='TransactionListController' >
+                    <div class="panel-heading" id="transactionHeader">{{headerTitle}} <span class="badge">{{transactions.length}}</span></div>
+                    <div class="panel-body" id="trantable"  data-spy="scroll" style="height: 500px;overflow:auto;">
                         <table class="table table-striped table-condensed"  >
                             <thead>
                                 <tr>
@@ -82,41 +72,105 @@
                                 </tr>
                             </thead>
                             <tbody ng-repeat="t in transactions" id="transactions">
-                                <tr>
-                                    <td><a class="btn btn-xs btn-theme"  href="#/trans/{{t._id}}"><i class="glyphicon glyphicon-edit"></i></a></td>
-                                    <td>{{t.date | date:'yyyy-MM-dd'}}</td>
-                                    <td>{{t._type}}</td>
-                                    <td class="isNumber">{{t.value | number:2}}</td>
-                                    <td style="text-align:center"><input type="checkbox" class="toggleConfirm" name="confirm{{t._id}}" id="confirm{{t._id}}" value="true" /></td>
-                                    <td style="max-width:200px">{{t.note}}</td>
+                                <tr ng-controller="TransactionController" ng-init="init( t)">
+                                    <td><a class="btn btn-xs btn-theme"  href="#/trans/{{transaction._id}}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                    <td>{{transaction.date | date:'yyyy-MM-dd'}}</td>
+                                    <td>{{transaction._type}}</td>
+                                    <td class="isNumber">{{transaction.value | number:2}}</td>
+                                    <td style="text-align:center">
+                                    <input type="checkbox" class="toggleConfirm" ng-model="transaction.confirmed" value="true" /></td>
+                                    <td style="max-width:200px">{{transaction.note}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div> <!-- / panel-body -->
                 </div><!-- / panel -->
             </div><!-- /col -->
+        </div>d
+      </div>
+    </div><!--/#wrap -->
+
+    <!-- begin modals -->
+    <script type="text/ng-template" id="transaction_content.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Add / Edit Transaction</h3>
         </div>
-    </div>
-    
-    
+        <div class="modal-body">
+             <form class="form">
+               <div class="btn-group">
+                <label class="btn btn-primary" ng-model="transType" btn-radio="'Expense'">Expense</label>
+                <label class="btn btn-primary" ng-model="transType" btn-radio="'Bill'">Bill</label>
+                <label class="btn btn-primary" ng-model="transType" btn-radio="'Payment'">Payment</label>
+                <label class="btn btn-primary" ng-model="transType" btn-radio="'Transfer'">Transfer</label>
+                </div>
+             
+             
+                <label>Account</label>
+                <select></select>
+                <label>Type</label>
+                <select></select>
+                <label>Date</label>
+                <input type="date" />
+                <label>Amount</label>
+                <input type="number" />
+                <label>Note</label>
+                <input type="text" />
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <button class="btn btn-default" ng-click="open()">Open me!</button>
     
    
-    <!--[if lt IE 9]>
-    <script src="/app/lib/es5-shim/es5-shim.js"></script>
-    <script src="/app/lib/es5-shim/es5-sham.js"></script>
-    <![endif]-->
-    <!--<script src="/app/lib/jquery/dist/jquery.js"></script>-->
-    <!--<script src="/app/bower_components/requirejs/require.js" data-main="js/main.js"></script>-->
+
+    <div class="navbar navbar-default navbar-fixed-bottom" role="navigation" ng-controller="GraphCtrl">
+      <div style="width:49%;display:inline-block">
+      <div id="debitProgress"></div>
+      </div>
+      <div style="width:49%;display:inline-block">
+      <div id="debitProgress2"></div>
+      </div>
+    </div>
     
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>-->
+    <!--<script src="/app/js/bootstrap.min.js"></script>-->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/app/lib/jquery/dist/jquery.js"></script>
     <script src="/app/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/lib/angular/lib/angular.min.js"></script>
+    <script src="/lib/angular-route/angular-route.min.js"></script>
+    <script src="/app/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="/app/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    
+    <script src="/app/js/data.js"></script>
+    
+    
     <script src="/app/js/app.js"></script>
     <script src="/app/js/services/accountService.js"></script>
     <script src="/app/js/services/transactionService.js"></script>
     <script src="/app/js/controllers/mainController.js"></script>
+    <script src="/app/js/controllers/accountListController.js"></script>
     <script src="/app/js/controllers/accountController.js"></script>
-    <script src="/app/js/controllers/transactionController.js"></script>
-    </body>
+    <script src="/app/js/controllers/transactionController.js"></script>>
+    <script src="/app/js/controllers/graphController.js"></script>
+    
+    
+    
+    <script src="/lib/moment/min/moment.min.js"></script>
+    <script src="/app/lib/d3/d3.min.js" charset="utf-8"></script>
+    <script src="/app/js/graphs.js" ></script>
+    <script type="text/JavaScript">
+      var data1  =  {"pie":[{"name":"Banana","_id":"509001538389539539000001","balance":-5697,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]},{"name":"Best Buy","_id":"50a50f4259b7930200000009","balance":-3377,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]},{"name":"Frontier Cc","_id":"50b64e145af0090200000002","balance":-12564,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]},{"name":"Slate","_id":"5097f78d58ca8b5278000001","balance":-7724,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]}],"candle":[{"_id":"2012-10-15","value":-28355.019999999997},{"_id":"2012-11-15","value":-494.82000000000005},{"_id":"2012-12-15","value":1604.2700000000002},{"_id":"2013-01-15","value":-611.3600000000001},{"_id":"2013-02-15","value":180.89000000000001},{"_id":"2013-03-15","value":1159.9699999999998},{"_id":"2013-04-15","value":-1000.5699999999999},{"_id":"2013-05-15","value":-193.92000000000002},{"_id":"2013-06-15","value":-134.13},{"_id":"2013-07-15","value":-1239.59},{"_id":"2013-08-15","value":90.68999999999997},{"_id":"2013-09-15","value":-576.0600000000002},{"_id":"2013-10-15","value":183.68000000000004},{"_id":"2013-11-15","value":108.89999999999995},{"_id":"2013-12-15","value":-85.45}]};
+      $('#debitProgress').MonthProgress(data1.candle,false,150,12);
+      $('#debitProgress2').MonthProgress(data1.candle,false,150,12);
+
+    </script>
+  </body>
 </html>

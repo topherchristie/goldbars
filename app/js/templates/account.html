@@ -1,0 +1,62 @@
+ <div class="row panel panel-theme panel-tight" ng-controller='AccountController'>
+    <div class="panel-heading">
+            <a class="btn btn-xs btn-theme account" ng-click="backToList()"><i class="fa fa-th-list"></i></a>
+        {{ account.name}} <span class="badge"><i class="fa" ng-class="{
+                            'fa-credit-card':(account._type=='credit'),
+                            'fa-money':(account._type=='checking'),
+                            'fa-home':(account._type=='mortgage'),
+                            'fa-briefcase':(account._type=='investment'),
+                            'fa-umbrella':(account._type=='retirement'),
+                            'fa-floppy-o': (account._type=='savings')}" title="{{account._type}}"></i></span>
+        <span class="badge"><a href="{{a.link}}" target="_blank" class="non-button"><i class="fa fa-external-link"></i></a></span>
+        <span class="badge">balance: {{account.balance | number:2}}</span>
+        <span class="badge">confirmed: {{account.confirmed | number:2}}</span>
+        <span class="badge">remaining: {{remaining() | number:2}}</span>
+    </div>
+    <div class="panel-body">
+        <h4 class="modal-title">Add / Edit Transaction</h4>
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                <div class="btn-group col-sm-10">
+                    <label class="btn btn-theme" ng-model="transaction.transType" btn-radio="'Expense'">Expense</label>
+                    <label class="btn btn-theme" ng-model="transaction.transType" btn-radio="'Bill'">Bill</label>
+                    <label class="btn btn-theme" ng-model="transaction.transType" btn-radio="'Payment'">Payment</label>
+                    <label class="btn btn-theme" ng-model="transaction.transType" btn-radio="'Transfer'">Transfer</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Date</label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-8">    
+                            <input class="form-control" placeholder="Date" type="text" ng-click="open($event)"
+                             datepicker-popup ng-model="transaction.date" is-open="opened" 
+                             datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        </div>
+                        <div class="col-sm-4">    
+                            <a class="btn btn-theme btn-xs" ng-class="{'btn-primary':isYesterday()}" ng-click="yesterday()">Yesterday</a>      
+                            <a class="btn btn-theme btn-xs" ng-class="{'btn-primary':isToday()}" ng-click="today()">Today</a>      
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="Amount" class="col-sm-2 control-label">Amount</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="inputEmail3" type="number" placeholder="Amount" />
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="Note" class="col-sm-2 control-label">Note</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="Note" placeholder="Note" />
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </form>
+    </div>
+</div>
+                

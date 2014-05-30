@@ -1,0 +1,38 @@
+ <div class="row panel panel-theme panel-tight" ng-controller='AccountListController'>
+    <div class="panel-heading">Accounts <span class="badge">{{accounts.length}}</span></div>
+    <div class="panel-body" data-spy="scroll" style="height: 500px;overflow:auto;" >
+        <table class="table table-striped table-condensed" >
+            <thead>
+                <tr>
+                    <td>&nbsp;</td> 
+                    <td>Name</td>
+                    <td class="isNumber">Balance</td>
+                    <td class="isNumber hidden-xs hidden-sm">Confirmed</td>
+                    <td class="isNumber">Remaining</td>
+                </tr>
+            </thead>
+            <tbody ng-repeat="a in accounts" id="accounts">
+                <tr>
+                    <td><a class="btn btn-xs btn-theme account" ng-click="viewAccount(a)">
+                          <i class="fa" ng-class="{
+                            'fa-credit-card':(a._type=='credit'),
+                            'fa-money':(a._type=='checking'),
+                            'fa-home':(a._type=='mortgage'),
+                            'fa-briefcase':(a._type=='investment'),
+                            'fa-umbrella':(a._type=='retirement'),
+                            'fa-floppy-o': (a._type=='savings')}" title="{{a._type}}"></i>
+                        
+                    </a>
+                    <a class="btn btn-xs btn-theme" ng-click="open(a._id)"><i class="fa fa-plus"></i></a>
+                    </td>
+                    <td><a ng-click="viewAccount(a)" id="{{a.id}}">{{a.name}}</a>&nbsp;
+                        <a href="{{a.link}}" target="_blank" class="non-button"><i class="fa fa-external-link"></i></a>
+                    </td>
+                    <td class="isNumber">{{a.balance | number:2}}</td>
+                    <td class="isNumber hidden-xs hidden-sm">{{a.confirmed | number:2}}</td>
+                    <td class="isNumber">{{remaining(a) | number:2}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> <!-- / panel-body -->
+</div><!-- / panel -->
