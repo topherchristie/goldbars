@@ -29,7 +29,16 @@ router.use('/lib',express.static(path.resolve(__dirname, 'node_modules')));
 router.use('/app',express.static(path.resolve(__dirname, 'app')));
 var messages = [];
 var sockets = [];
-
+var accountTypes = require('./accountTypes');
+function isOfDataType(dataType, account){
+    if(dataType === "debit"){
+        return account.type.equal(accountTypes.credit);
+    }else if(dataType === "interest"){
+        return account.type.equal(accountTypes.credit);
+    }else{
+        return true;  
+    }
+}
 router.get("/", function(req,res){
     res.redirect('/app/index.html');
 });
@@ -88,14 +97,28 @@ io.on('connection', function (socket) {
         
         });
     });
-    socket.on('requestTransactions', function (data) {
-      
-        
+    socket.on('requestCandleData',function(data){
+        var accountDao = new AccountDao();
         var transDao = new TransactionDao();
-
-        var id = data.id;
+        accountDao.all(function(err,accounts){
+            var accountIds = [];
+            accounts.forEach(function(a){
+                if(isOfDataType('debit',a)){
+                    accountIds[accountIds.length] = a._id.toString();
+                }
+            });
+            transDao.reduceForAccount(accountIds,function(err,result){
+                if(err){
+                    broadcast('error',err);
+                }else{
+                    broadcast('candleDataServed', result);    
+                }
+            });
+       });
+    });
+    socket.on('requestTransactions', function (data) {
+        var transDao = new TransactionDao();
         var name = data.name;
-       
          if(data && data.id){
             transDao.findLast100ByAccount(data.id,function(err,data){
                 if(err){
@@ -106,8 +129,6 @@ io.on('connection', function (socket) {
             });
         }else{
             transDao.findLast100(function(err,data){
-                //broadcast('transactions',[{'date':'2013-12-25',"value":34,"_id":"fffff_ddddd_4"}]);
-                
                 if(err){
                     broadcast('error',err);
                 }else{
@@ -115,7 +136,6 @@ io.on('connection', function (socket) {
                 }
             });
         }
-        //broadcast('transactions',[{'date':'2013-12-25',"value":34,"_id":"fffff_ddddd_4"}])
     });
 });
 

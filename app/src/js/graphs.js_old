@@ -1,24 +1,26 @@
-"use strict";
-(function ( $ ) {
 
+(function ( $ ) {
+"use strict";
 function createPoints(data,months) {
   var points = [];
   var runningBalance = 0;
   var maxDate = d3.max(data, function(d) { return d.date;});
 	var minDate = d3.min(data, function(d) { return d.date;});
 	var pointdate = (moment(minDate));
+  var sumFunction = function(d){
+        var diff = d.date.diff(pointdate); //diffMilliseconds(pointdate);
+        if(diff === 0){
+            runningBalance +=-1*d.value;
+        }
+  };
   while(pointdate <= maxDate){
       var point = {};
       point.date = (moment(pointdate)); 
       point.label= point.date.format("MMM-YY") ;
       point.startBalance = runningBalance;
-        data.forEach(function(d){
-            var diff = d.date.diff(pointdate); //diffMilliseconds(pointdate);
-            if(diff === 0){
-                runningBalance +=-1*d.value;
-            }
-        });
-       point.endBalance = runningBalance;
+      
+      data.forEach(sumFunction);
+      point.endBalance = runningBalance;
       points.push(point);
       pointdate.add('months',1);
   }
@@ -53,10 +55,10 @@ function  setHeight(y,datum, index) {
 function buildTitle(datum) {
   var diff = datum.startBalance - datum.endBalance;
   var percent = 0;
-  if (datum.startBalance != 0) {
+  if (datum.startBalance !== 0) {
       percent = diff / datum.startBalance;
   }
-  var endb = (eval(datum.endBalance)).toFixed(2);
+  var endb = (parseFloat(datum.endBalance)).toFixed(2);
   var lbl = "{0}, {1} to {2}, {3} ${4} {5} %".format(datum.label, datum.startBalance.toFixed(2), endb, (diff > 0 ? "up" : "down"), diff.toFixed(2), (percent * 100).toFixed(2));
   return lbl;/* datum.label + " from " + ((datum.startBalance).toFixed(2)) + " to2 " + endb
      + " " + (diff > 0 ? "up" : "down") + " $" + diff.toFixed(2) + " " + (percent*100).toFixed(2) + "%"; */
@@ -81,16 +83,19 @@ $.fn.MonthProgress = function(baseData,showXAxis,height,rollingMonths){
   });
   // convert data to monthly totals with start, end and label
   console.log("rollingMonths",baseData,showXAxis,height,rollingMonths);
+  var $el = $(this).get(0);
   data= createPoints(baseData,rollingMonths);
   //get the max and min for x and y
 	
 	maxDebit = d3.max(data, function(d) { return d.startBalance > d.endBalance?d.startBalance : d.endBalance;});
   minDebit = d3.min(data, function(d) { return d.startBalance < d.endBalance?d.startBalance : d.endBalance;});
 
-  var parentWidth = $( this.selector).parent().width();
+   console.log('selector',this, $(this).get(0));
+
+  var parentWidth = $( $el).parent().width();
   
 	//create canvas to full space
-	canvas = d3.select( this.selector).append("svg:svg")
+	canvas = d3.select( $el).append("svg:svg")
 				.attr("width", parentWidth)// '100%') //w + 40)
 				.attr("height",  height) // h + (topMargin + margin))
        // .attr("transform", "translate(" + margin + "," + topMargin + ")")
@@ -104,7 +109,7 @@ $.fn.MonthProgress = function(baseData,showXAxis,height,rollingMonths){
 
   // calculate bar width, width divided by data points
 	barwidth = Math.ceil(w/(data.length));
-  var reds = []
+  var reds = [];
   reds.push("#BD33A4");
   reds.push ("#AA98A9");
   reds.push("#CC0000"); //boston
@@ -127,11 +132,11 @@ $.fn.MonthProgress = function(baseData,showXAxis,height,rollingMonths){
   //reds[14] =reds[15] = "Red";//debian
 
   var redIndex = Math.floor(reds.length * Math.random());
-  console.log("redIndex",redIndex,reds[redIndex])
+  console.log("redIndex",redIndex,reds[redIndex]);
 
   var getRed = function(index){
   	return reds[1];//redIndex];  //--0,
-  }
+  };
   var blues = [];
   // blues.push('#23297A');
   // blues.push('#4169E1');
@@ -162,13 +167,12 @@ blues.push('#708090');
   
 
 
-  	var blueIndex = Math.floor(blues.length * Math.random());
-  	console.log("blueIndex",blueIndex,blues[blueIndex])
+  var blueIndex = Math.floor(blues.length * Math.random());
   var getBlue = function(){
   		//return blues[7]; //--0,
   	return blues[blueIndex]; //--0,
   
-  }
+  };
   // create candlestick rectangles
   canvas.selectAll("rect").data(data).enter().append("svg:rect")
        .attr("x", function (datum, index) { return x(index); })
@@ -217,9 +221,9 @@ blues.push('#708090');
   }else{
   	canvas.selectAll(".x text").text("");
   }
-  // set and create y axis
-  yAxis = d3.svg.axis().scale(y).ticks(7).orient("left")
-	canvas.append("g")
+    // set and create y axis
+    yAxis = d3.svg.axis().scale(y).ticks(7).orient("left");
+    canvas.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate( " + x(0) + "," + 0 + ")")
       .call(yAxis);

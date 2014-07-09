@@ -1,5 +1,5 @@
 angular.module('barsOfGold')
-.controller('GraphCtrl', function ($scope) {
+.controller('GraphCtrl',['$scope',function ($scope) {
 	console.log('moneyApp,GraphCtrl');
   
-});
+}]);

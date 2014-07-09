@@ -8,10 +8,10 @@
     <meta name="description" content="">
     <meta name="author" content="Chris Christie">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="//use.edgefonts.net/lekton;m-1m.js"></script>
     <link rel="stylesheet" href="/app/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/app/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/app/css/bolt-theme/css/main.css">
+    <link rel="stylesheet" href="/app/vendor/epoch.min.css">
     <link rel="stylesheet" href="/app/css/layout.css">
     <link rel="stylesheet" href="/app/css/main.css">
     <link rel="stylesheet" href="/app/css/main1.css">
@@ -71,8 +71,8 @@
                                     <td>Note</td>
                                 </tr>
                             </thead>
-                            <tbody ng-repeat="t in transactions" id="transactions">
-                                <tr ng-controller="TransactionController" ng-init="init( t)">
+                            <tbody >
+                                <tr ng-repeat="t in transactions" id="transactions" ng-controller="TransactionController" ng-init="init( t)">
                                     <td><a class="btn btn-xs btn-theme"  href="#/trans/{{transaction._id}}"><i class="glyphicon glyphicon-edit"></i></a></td>
                                     <td>{{transaction.date | date:'yyyy-MM-dd'}}</td>
                                     <td>{{transaction._type}}</td>
@@ -128,11 +128,15 @@
    
 
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation" ng-controller="GraphCtrl">
-      <div style="width:49%;display:inline-block">
-      <div id="debitProgress"></div>
-      </div>
-      <div style="width:49%;display:inline-block">
-      <div id="debitProgress2"></div>
+      
+      <div class="row">
+        <div class="col-lg-6">
+            <!--<div id="debitProgress"></div>-->
+            <epoch-candle ng-model="candlechart" id="debitProgressDirective" style="height:100px;width:780px;" />
+        </div>
+          <div class="col-lg-6">
+            <div id="debitProgress2" class="epoch category20b col-lg-6" style="height:120px;width:780px;"></div>        
+          </div>
       </div>
     </div>
     
@@ -148,29 +152,87 @@
     <script src="/lib/angular-route/angular-route.min.js"></script>
     <script src="/app/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="/app/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    
-    <script src="/app/js/data.js"></script>
-    
-    
-    <script src="/app/js/app.js"></script>
-    <script src="/app/js/services/accountService.js"></script>
-    <script src="/app/js/services/transactionService.js"></script>
-    <script src="/app/js/controllers/mainController.js"></script>
-    <script src="/app/js/controllers/accountListController.js"></script>
-    <script src="/app/js/controllers/accountController.js"></script>
-    <script src="/app/js/controllers/transactionController.js"></script>>
-    <script src="/app/js/controllers/graphController.js"></script>
-    
-    
-    
-    <script src="/lib/moment/min/moment.min.js"></script>
     <script src="/app/lib/d3/d3.min.js" charset="utf-8"></script>
-    <script src="/app/js/graphs.js" ></script>
+    <script src="/lib/moment/min/moment.min.js"></script>
+    <script src="/app/vendor/epoch.min.js"></script>
+    
+    
+    <!--<script src="/app/js/data.js"></script>-->
+    
+    
+    <script src="/app/Money.js"></script>
+    <!--<script src="/app/js/app.js"></script>-->
+    <!--<script src="/app/js/services/accountService.js"></script>-->
+    <!--<script src="/app/js/services/transactionService.js"></script>-->
+    <!--<script src="/app/js/controllers/mainController.js"></script>-->
+    <!--<script src="/app/js/controllers/accountListController.js"></script>-->
+    <!--<script src="/app/js/controllers/accountController.js"></script>-->
+    <!--<script src="/app/js/controllers/transactionController.js"></script>>-->
+    <!--<script src="/app/js/controllers/graphController.js"></script>-->
+    
+    
+    
+    
+    
+    <!--<script src="/app/js/graphs.js" ></script>-->
     <script type="text/JavaScript">
       var data1  =  {"pie":[{"name":"Banana","_id":"509001538389539539000001","balance":-5697,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]},{"name":"Best Buy","_id":"50a50f4259b7930200000009","balance":-3377,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]},{"name":"Frontier Cc","_id":"50b64e145af0090200000002","balance":-12564,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]},{"name":"Slate","_id":"5097f78d58ca8b5278000001","balance":-7724,"type":{"id":1,"name":"credit","transformer":-1},"balances":[]}],"candle":[{"_id":"2012-10-15","value":-28355.019999999997},{"_id":"2012-11-15","value":-494.82000000000005},{"_id":"2012-12-15","value":1604.2700000000002},{"_id":"2013-01-15","value":-611.3600000000001},{"_id":"2013-02-15","value":180.89000000000001},{"_id":"2013-03-15","value":1159.9699999999998},{"_id":"2013-04-15","value":-1000.5699999999999},{"_id":"2013-05-15","value":-193.92000000000002},{"_id":"2013-06-15","value":-134.13},{"_id":"2013-07-15","value":-1239.59},{"_id":"2013-08-15","value":90.68999999999997},{"_id":"2013-09-15","value":-576.0600000000002},{"_id":"2013-10-15","value":183.68000000000004},{"_id":"2013-11-15","value":108.89999999999995},{"_id":"2013-12-15","value":-85.45}]};
-      $('#debitProgress').MonthProgress(data1.candle,false,150,12);
-      $('#debitProgress2').MonthProgress(data1.candle,false,150,12);
+  //   $('#debitProgress').MonthProgress(data1.candle,false,150,12);
+      $('#debitProgress2').MonthProgress(data1.candle,false,120,12);
 
+var barChartData = [
+  // First bar series
+  {
+    label: 'Series 1',
+    values: [
+      { x: 'A', y: 30 },
+      { x: 'B', y: 10 },
+      { x: 'C', y: 12 }
+    ]
+   },
+
+  // Second series
+  {
+    label: 'Series 2',
+    values: [
+      { x: 'A', y: 20 },
+      { x: 'B', y: 39 },
+      { x: 'C', y: 8 }
+    ]
+  }
+//Add as many series as you'd like
+];
+var barChartData2 = [
+  // First bar series
+  {
+    label: 'Series 1',
+    values: [
+      { x: 'A', y: 30 },
+      { x: 'B', y: 10 },
+      { x: 'C', y: 44 }
+    ]
+   },
+
+  // Second series
+  {
+    label: 'Series 2',
+    values: [
+      { x: 'A', y: 20 },
+      { x: 'B', y: 39 },
+      { x: 'C', y: 8 }
+    ]
+  }
+//Add as many series as you'd like
+];
+//$(document).ready(function(){
+//  var chartInstance2 = $('#debitProgress2').epoch({
+//         type: 'bar',
+//         data: barChartData
+//     });
+//     setTimeout(function() {
+//          chartInstance2.update(barChartData2);
+//     }, 5000);
+// });
     </script>
   </body>
 </html>

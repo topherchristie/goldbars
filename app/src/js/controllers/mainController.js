@@ -30,4 +30,42 @@ angular.module('barsOfGold')
         $scope.socket.emit('requestTransactions',{"id":account._id,'name':account.name});
     };
     $scope.socket.emit('requestTransactions',{});
+    $scope.socket.emit('requestCandleData',{});
+    
+    $scope.socket.on('candleDataServed',function(result){
+       console.log('candleDataServed',result);
+    //   $scope.barchart = result;
+        // var bar = [{label:'debit',values:[]}];
+        // var previous=0;
+        // for(var i=0;i<result.length;i++){
+        //     previous += result[i].value;
+        //     bar[0].values.push({x:i /*result[i]._id*/,y:previous /*result[i].value*/});
+            
+        // }
+        //   console.log('bar',bar);
+        // $scope.barchart = bar;
+        $scope.candlechart = result;
+       $scope.$apply();
+    });
+    $scope.candlechart = null;
+    $scope.barchart = [
+    //   // First bar series
+    //   {
+    //     label: 'Series 1',
+    //     values: [
+    //       { x: 'A', y: 55 },
+    //     ]
+    //   },
+    
+    //   // Second series
+    //   {
+    //     label: 'Series 2',
+    //     values: [
+    //       { x: 'A', y: 20 },
+    //       { x: 'B', y: 55 },
+    //       { x: 'C', y: 8 }
+    //     ]
+    //   }
+    
+     ];
 }]);

@@ -11,8 +11,8 @@
                     <td class="isNumber">Remaining</td>
                 </tr>
             </thead>
-            <tbody ng-repeat="a in accounts" id="accounts">
-                <tr>
+            <tbody>
+                <tr ng-repeat="a in accounts" id="accounts">
                     <td><a class="btn btn-xs btn-theme account" ng-click="viewAccount(a)">
                           <i class="fa" ng-class="{
                             'fa-credit-card':(a._type=='credit'),

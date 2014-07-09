@@ -1,5 +1,6 @@
 @import url(//fonts.googleapis.com/css?family=Lato:300,400,700,900);
 @import url(//fonts.googleapis.com/css?family=Raleway:400,300,700,900);
+@import url(//fonts.googleapis.com/css?family=Droid+Sans+Mono);
 body{
 background-color:#f2f2f2;font-family:Lato;font-weight:300;
 font-size:16px;
@@ -94,4 +95,8 @@ hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padd
 	
 .navbar-brand{
     height:20px;
+}
+
+table.table td {
+    font-family: 'Droid Sans Mono';
 }

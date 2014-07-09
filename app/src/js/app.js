@@ -1,11 +1,14 @@
 angular.module('barsOfGold',['ui.bootstrap','ngRoute'])
-.config(function($routeProvider){
+.config(['$routeProvider',function($routeProvider){
     $routeProvider
         .when('/accounts', {
-            templateUrl: '/app/js/templates/account-list.html'
+            templateUrl: '/app/src/templates/account-list.html'
         })
         .when('/account/:accountId', {
-            templateUrl: '/app/js/templates/account.html'
+            templateUrl: '/app/src/templates/account.html'
+        })
+        .when('/transaction/:transactionId', {
+            templateUrl: '/app/src/templates/transaction2.html'
         })
         .otherwise({'redirectTo':'/accounts'});
-});
+}]);

@@ -3,7 +3,8 @@ body{
 }
 .isNumber {
     text-align:right;
-    font-family: lekton, monospace;
+    /*font-family: lekton, monospace;*/
+    font-family: 'Droid Sans Mono' ;
 }
 a{
     color:black;

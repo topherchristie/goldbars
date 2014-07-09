@@ -10,7 +10,7 @@ angular.module('barsOfGold')
 .controller('TransactionController',['$scope',function($scope){
     $scope.init = function(t){
         $scope.transaction =t;
-    }
+    };
     $scope.$watch('transaction.confirmed',function(newValue,oldValue){
         if(newValue != oldValue){
             var t = $scope.transaction;
